@@ -1,7 +1,7 @@
 {
-  "name": "grapesjs-plugin-boilerplate",
-  "version": "0.1.8",
-  "description": "GrapesJS Plugin Boilerplate",
+  "name": "grapesjs-firestore",
+  "version": "0.1.0",
+  "description": "GrapesJS Cloud Firestore Storage Wrapper",
   "main": "dist/YOUR-PLUGIN-NAME.min.js",
   "scripts": {
     "lint": "eslint src",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/artf/grapesjs-plugin-boilerplate.git"
+    "url": "git+https://github.com/artf/grapesjs-plugin-boilerplate.git"
   },
   "keywords": [
     "grapesjs",
@@ -42,5 +42,9 @@
     "webpack": "^4.6.0",
     "webpack-cli": "^2.1.2",
     "webpack-dev-server": "^3.1.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/artf/grapesjs-plugin-boilerplate/issues"
+  },
+  "homepage": "https://github.com/artf/grapesjs-plugin-boilerplate#readme"
 }
