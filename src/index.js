@@ -2,87 +2,93 @@ import grapesjs from 'grapesjs';
 
 export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) => {
   const options = { ...{
+    // Firebase API key
     apiKey: '',
 
+    // Firebase Auth domain
     authDomain: '',
 
+    // Cloud Firestore project ID
     projectId: '',
 
     // Document id
     docId: 'gjs',
 
+    // Collection name
     collectionName: 'templates',
 
-    // Databse settings
+    // Enable support for offline data persistence
+    enableOffline: true,
+
+    // Database settings (https://firebase.google.com/docs/reference/js/firebase.firestore.Settings)
     settings: { timestampsInSnapshots: true },
   },  ...opts };
 
-  const autoAdd = 1; // the id is generated on fly
   const sm = editor.StorageManager;
+  const storageName = 'firestore';
 
+  let db;
+  let doc;
+  let docId;
+  let collection;
   const apiKey = options.apiKey;
   const authDomain = options.authDomain;
   const projectId = options.projectId;
   const dbSettings = options.settings;
+  const onError = err => sm.onError(storageName, err.code || err);
 
-  sm.add('firestore', {
-    getDocId() {
-      return options.docId || this.docId;
+  const getDoc = () => doc;
+  const getDocId = () => docId || options.docId;
+
+  const getAsyncCollection = (clb) => {
+    if (collection) return clb(collection);
+    firebase.initializeApp({ apiKey, authDomain, projectId });
+    const fs = firebase.firestore();
+    fs.settings(dbSettings);
+
+    const callback = () => {
+      db = firebase.firestore();
+      collection = db.collection(options.collectionName);
+      clb(collection);
+    }
+
+    if (options.enableOffline) {
+      fs.enablePersistence().then(callback).catch(onError);
+    } else {
+      callback();
+    }
+  };
+
+  const getAsyncDoc = (clb) => {
+    getAsyncCollection(cll => {
+      doc = cll.doc(getDocId());
+      clb(doc);
+    });
+  };
+
+  sm.add(storageName, {
+    getDoc,
+
+    getDocId,
+
+    setDocId(id) {
+      docId = id;
     },
 
-    getCollection() {
-      if (!this.collection) {
-        firebase.initializeApp({ apiKey, authDomain, projectId });
-        const db = firebase.firestore();
-        db.settings(dbSettings);
-        this.collection = db.collection(options.collectionName);
-      }
-
-      return this.collection;
-    },
-
-    getDoc() {
-      const collection = this.getCollection();
-      const id = this.getDocId();
-
-      if (id) {
-        return collection.doc(id);
-      }
-    },
-    /**
-     * Load the data
-     * @param  {Array} keys Array containing values to load, eg, ['gjs-components', 'gjs-style', ...]
-     * @param  {Function} clb Callback function to call when the load is ended
-     */
     load(keys, clb, clbError) {
-      const docRef = this.getDoc();
-
-      if (docRef) {
-        docRef.get()
+      getAsyncDoc(doc => {
+        doc.get()
         .then(doc => doc.exists && clb(doc.data()))
         .catch(clbError);
-      }
+      });
     },
 
-    /**
-     * Store the data
-     * @param  {Object} data Data object to store
-     * @param  {Function} clb Callback function to call when the load is ended
-     */
     store(data, clb, clbError) {
-      const docRef = this.getDoc();
-
-      if (docRef) {
-        docRef.set(data)
+      getAsyncDoc(doc => {
+        doc.set(data)
         .then(clb)
         .catch(clbError);
-      } else if (autoAdd) {
-        const collection = this.getCollection();
-        collection.add(data).then((docRef) => {
-          this.docId = docRef.id;
-          clb(docRef);
-        }).catch(clbError);
-      }
+      });
     }
   });
 });

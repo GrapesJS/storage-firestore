@@ -15,7 +15,6 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 
 
 
-
 ## Summary
 
 * Plugin name: `grapesjs-firestore`
@@ -56,6 +55,10 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 
 ## Usage
 
+- Open the [Firebase Console](https://console.firebase.google.com) and create a new project.
+- In the Database section, click Try Firestore Beta.
+- When you create a Firestore project, it also enables its API, which you can get from [Cloud API Manager](https://console.cloud.google.com/projectselector/apis/api/firestore.googleapis.com/overview)
+
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
 <script src="https://unpkg.com/grapesjs"></script>
@@ -70,13 +73,18 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
       plugins: ['grapesjs-firestore'],
       pluginsOpts: {
         'grapesjs-firestore': {
-          // options
+          docId: 'someID',
+          apiKey: '<API_KEY>',
+          authDomain: '<PROJECT_ID>.firebaseapp.com',
+          projectId: '<PROJECT_ID>',
         }
       }
   });
 </script>
 ```
 
+By default, Firebase allows everyone to read/write data inside your DB by knowing the API credentials, which is ok for the first setup and development but, obviously, not for production.
+To get more about the Firestore security checkout [this guide](https://firebase.google.com/docs/firestore/security/overview).
 
 
 
