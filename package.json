@@ -2,7 +2,7 @@
   "name": "grapesjs-firestore",
   "version": "0.1.0",
   "description": "GrapesJS Cloud Firestore Storage Wrapper",
-  "main": "dist/YOUR-PLUGIN-NAME.min.js",
+  "main": "dist/grapesjs-firestore.min.js",
   "scripts": {
     "lint": "eslint src",
     "v:patch": "npm version --no-git-tag-version patch",

@@ -5,7 +5,10 @@
     <title>GrapesJS Plugin Boilerplate</title>
     <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
     <script src="https://unpkg.com/grapesjs"></script>
-    <script src="dist/grapesjs-plugin-boilerplate.min.js"></script>
+    <script src="dist/grapesjs-firestore.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
     <style>
       body,
       html {
@@ -29,13 +32,18 @@
         height: '100%',
         showOffsets: 1,
         noticeOnUnload: 0,
-        storageManager: { autoload: 0 },
+        storageManager: { type: 'firestore', autoload: 0 },
         container: '#gjs',
         fromElement: true,
 
-        plugins: ['YOUR-PLUGIN-NAME'],
+        plugins: ['grapesjs-firestore'],
         pluginsOpts: {
-          'YOUR-PLUGIN-NAME': {}
+          'grapesjs-firestore': {
+            docId: 'someID',
+            apiKey: '**',
+            authDomain: '**',
+            projectId: '**',
+          }
         }
       });
       window.editor = editor;
