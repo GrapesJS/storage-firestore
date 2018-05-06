@@ -2,17 +2,14 @@
 
 GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/firestore), flexible, scalable NoSQL cloud database to store and sync data for client/server-side development.
 
+> Requires GrapesJS v0.14.15 or higher
+
 
 ## Summary
 
 * Plugin name: `grapesjs-firestore`
-* Components
-  * `new-component1`
-  * `new-component2`
-* Blocks
-  * `new-block1`
-  * `new-block1`
-...
+* Storage
+  * `firestore`
 
 
 
@@ -22,7 +19,13 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 
 |Option|Description|Default|
 |-|-|-
-|`option1`|Description option|`default value`|
+| `apiKey` | Firebase API key | `''` |
+| `authDomain` | Firebase Auth domain | `''` |
+| `projectId` | Cloud Firestore project ID | `''` |
+| `docId` | Document id | `'gjs'` |
+| `collectionName` | Collection name | `'templates'` |
+| `enableOffline` | Enable support for offline data persistence | `true` |
+| `settings` | Firestore database [settings](https://firebase.google.com/docs/reference/js/firebase.firestore.Settings) | `{ timestampsInSnapshots: true }` |
 
 
 
@@ -35,7 +38,7 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 * NPM
   * `npm i grapesjs-firestore`
 * GIT
-  * `git clone https://github.com/YOUR-NAME/grapesjs-firestore.git`
+  * `git clone https://github.com/artf/grapesjs-firestore.git`
 
 
 
@@ -43,14 +46,15 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 
 ## Usage
 
-- Open the [Firebase Console](https://console.firebase.google.com) and create a new project.
-- In the Database section, click Try Firestore Beta.
-- When you create a Firestore project, it also enables its API, which you can get from [Cloud API Manager](https://console.cloud.google.com/projectselector/apis/api/firestore.googleapis.com/overview)
+Before start using this plugin you have to create and enable Cloud Firestore project in [Firebase Console](https://console.firebase.google.com). When you create a Firestore project, it also enables its API, which you can get from [Cloud API Manager](https://console.cloud.google.com/projectselector/apis/api/firestore.googleapis.com/overview).
 
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
 <script src="https://unpkg.com/grapesjs"></script>
 <script src="path/to/grapesjs-firestore.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
 
 <div id="gjs"></div>
 
@@ -58,6 +62,7 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
   var editor = grapesjs.init({
       container : '#gjs',
       ...
+      storageManager: { type: 'firestore' },
       plugins: ['grapesjs-firestore'],
       pluginsOpts: {
         'grapesjs-firestore': {
@@ -82,7 +87,7 @@ To get more about the Firestore security checkout [this guide](https://firebase.
 Clone the repository
 
 ```sh
-$ git clone https://github.com/YOUR-NAME/grapesjs-firestore.git
+$ git clone https://github.com/artf/grapesjs-firestore.git
 $ cd grapesjs-firestore
 ```
 
