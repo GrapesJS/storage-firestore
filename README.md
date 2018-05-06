@@ -2,18 +2,6 @@
 
 GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/firestore), flexible, scalable NoSQL cloud database to store and sync data for client/server-side development.
 
-### Usage
-1. Clone this repository `git clone https://github.com/artf/grapesjs-plugin-boilerplate.git`
-1. Replace in all files `grapesjs-firestore` with your plugin name
-1. Update `package.json`
-1. Install dependencies `npm i` and run the local server `npm start`
-1. Start creating your plugin from `src/index.js`
-1. Show some gif/demo if possible
-1. Update README
-1. When you're ready update the production file `npm run build`
-1. Publish
-
-
 
 ## Summary
 
