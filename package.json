@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-firestore",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "GrapesJS Cloud Firestore Storage Wrapper",
   "main": "dist/grapesjs-firestore.min.js",
   "scripts": {
