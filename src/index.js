@@ -34,14 +34,13 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
     projectId: options.projectId,
   });
 
-  const fs = firebase.firestore();
-  fs.settings(options.settings);
+  const db = firebase.firestore();
+  db.settings(options.settings);
 
   if (options.enableOffline) {
-    fs.enablePersistence().catch(error => editor.StorageManager.onError(storageName, error.code || error));
+    db.enablePersistence().catch(error => editor.StorageManager.onError(storageName, error.code || error));
   }
 
-  const db = firebase.firestore();
   const collectionRef = db.constructor(options.collectionName);
   let docRef = collectionRef.doc(docId);
 
