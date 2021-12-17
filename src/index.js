@@ -40,7 +40,7 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
 
   const db = firebase.firestore();
   const collectionRef = db.constructor(options.collectionName);
-  let docRef = collectionRef.doc(getDocId());
+  let docRef = collectionRef.doc(docId);
 
   editor.StorageManager.add(storageName, {
     getDoc,
