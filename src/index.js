@@ -20,8 +20,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
     // Enable support for offline data persistence
     enableOffline: true,
 
-    // Database settings (https://firebase.google.com/docs/reference/js/firebase.firestore.Settings)
-    settings: { timestampsInSnapshots: true },
   },  ...opts };
 
   const sm = editor.StorageManager;
@@ -34,7 +32,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
   const apiKey = options.apiKey;
   const authDomain = options.authDomain;
   const projectId = options.projectId;
-  const dbSettings = options.settings;
   const onError = err => sm.onError(storageName, err.code || err);
 
   const getDoc = () => doc;
@@ -44,7 +41,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
     if (collection) return clb(collection);
     firebase.initializeApp({ apiKey, authDomain, projectId });
     const fs = firebase.firestore();
-    fs.settings(dbSettings);
 
     const callback = () => {
       db = firebase.firestore();
