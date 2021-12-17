@@ -28,13 +28,14 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
 
   let docId = options.docId;
 
-  const apiKey = options.apiKey;
-  const authDomain = options.authDomain;
-  const projectId = options.projectId;
-
   const getDoc = () => doc;
 
-  firebase.initializeApp({ apiKey, authDomain, projectId });
+  firebase.initializeApp({
+    apiKey: options.apiKey,
+    authDomain: options.authDomain,
+    projectId: options.projectId,
+  });
+
   const fs = firebase.firestore();
   fs.settings(options.settings);
 
