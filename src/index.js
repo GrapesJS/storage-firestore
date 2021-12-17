@@ -1,7 +1,7 @@
 import grapesjs from 'grapesjs';
 
 export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) => {
-  const options = { ...{
+  const options = {
     // Firebase API key
     apiKey: '',
 
@@ -19,8 +19,7 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
 
     // Enable support for offline data persistence
     enableOffline: true,
-
-  },  ...opts };
+    ...opts };
 
   const sm = editor.StorageManager;
   const storageName = 'firestore';
