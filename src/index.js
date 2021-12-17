@@ -25,66 +25,45 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
   const sm = editor.StorageManager;
   const storageName = 'firestore';
 
-  let db;
-  let doc;
-  let docId;
-  let collection;
+  let docId = options.docId;
+
   const apiKey = options.apiKey;
   const authDomain = options.authDomain;
   const projectId = options.projectId;
   const onError = err => sm.onError(storageName, err.code || err);
 
   const getDoc = () => doc;
-  const getDocId = () => docId || options.docId;
 
-  const getAsyncCollection = (clb) => {
-    if (collection) return clb(collection);
-    firebase.initializeApp({ apiKey, authDomain, projectId });
-    const fs = firebase.firestore();
+  firebase.initializeApp({ apiKey, authDomain, projectId });
+  const fs = firebase.firestore();
 
-    const callback = () => {
-      db = firebase.firestore();
-      collection = db.collection(options.collectionName);
-      clb(collection);
-    }
+  if (options.enableOffline) {
+    fs.enablePersistence().catch(onError);
+  }
 
-    if (options.enableOffline) {
-      fs.enablePersistence().then(callback).catch(onError);
-    } else {
-      callback();
-    }
-  };
-
-  const getAsyncDoc = (clb) => {
-    getAsyncCollection(cll => {
-      doc = cll.doc(getDocId());
-      clb(doc);
-    });
-  };
+  const db = firebase.firestore();
+  const collection = db.constructor(options.collectionName);
+  let doc = collection.doc(getDocId());
 
   sm.add(storageName, {
     getDoc,
-
-    getDocId,
+    getDocId: () => docId,
 
     setDocId(id) {
       docId = id;
+      doc = collection.doc(docId);
     },
 
     load(keys, clb, clbError) {
-      getAsyncDoc(doc => {
-        doc.get()
-        .then(doc => doc.exists && clb(doc.data()))
-        .catch(clbError);
-      });
+      doc.get()
+      .then(doc => doc.exists && clb(doc.data()))
+      .catch(clbError);
     },
 
     store(data, clb, clbError) {
-      getAsyncDoc(doc => {
-        doc.set(data)
-        .then(clb)
-        .catch(clbError);
-      });
+      doc.set(data)
+      .then(clb)
+      .catch(clbError);
     }
   });
 });
