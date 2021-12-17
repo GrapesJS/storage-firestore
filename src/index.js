@@ -21,7 +21,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
     enableOffline: true,
     ...opts };
 
-  const sm = editor.StorageManager;
   const storageName = 'firestore';
 
   let docId = options.docId;
@@ -29,7 +28,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
   const apiKey = options.apiKey;
   const authDomain = options.authDomain;
   const projectId = options.projectId;
-  const onError = err => sm.onError(storageName, err.code || err);
 
   const getDoc = () => doc;
 
@@ -37,32 +35,32 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
   const fs = firebase.firestore();
 
   if (options.enableOffline) {
-    fs.enablePersistence().catch(onError);
+    fs.enablePersistence().catch(error => editor.StorageManager.onError(storageName, error.code || error));
   }
 
   const db = firebase.firestore();
-  const collection = db.constructor(options.collectionName);
-  let doc = collection.doc(getDocId());
+  const collectionRef = db.constructor(options.collectionName);
+  let docRef = collectionRef.doc(getDocId());
 
-  sm.add(storageName, {
+  editor.StorageManager.add(storageName, {
     getDoc,
     getDocId: () => docId,
 
     setDocId(id) {
       docId = id;
-      doc = collection.doc(docId);
+      docRef = collectionRef.doc(docId);
     },
 
-    load(keys, clb, clbError) {
-      doc.get()
-      .then(doc => doc.exists && clb(doc.data()))
-      .catch(clbError);
+    load(keys, callback, errorCallback) {
+      docRef.get()
+      .then(doc => doc.exists && callback(doc.data()))
+      .catch(errorCallback);
     },
 
-    store(data, clb, clbError) {
-      doc.set(data)
-      .then(clb)
-      .catch(clbError);
+    store(data, callback, errorCallback) {
+      docRef.set(data)
+      .then(callback)
+      .catch(errorCallback);
     }
   });
 });
