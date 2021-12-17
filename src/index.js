@@ -28,8 +28,6 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
 
   let docId = options.docId;
 
-  const getDoc = () => doc;
-
   firebase.initializeApp({
     apiKey: options.apiKey,
     authDomain: options.authDomain,
@@ -48,7 +46,7 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
   let docRef = collectionRef.doc(docId);
 
   editor.StorageManager.add(storageName, {
-    getDoc,
+    getDoc: () => docRef,
     getDocId: () => docId,
 
     setDocId(id) {
