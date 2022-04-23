@@ -1,7 +1,7 @@
 import grapesjs from 'grapesjs';
 
 export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) => {
-  const options = { ...{
+  const options = {
     // Firebase API key
     apiKey: '',
 
@@ -21,74 +21,48 @@ export default grapesjs.plugins.add('grapesjs-firestore', (editor, opts = {}) =>
     enableOffline: true,
 
     // Database settings (https://firebase.google.com/docs/reference/js/firebase.firestore.Settings)
-    settings: { timestampsInSnapshots: true },
-  },  ...opts };
+    settings: {},
+    ...opts };
 
-  const sm = editor.StorageManager;
   const storageName = 'firestore';
 
-  let db;
-  let doc;
-  let docId;
-  let collection;
-  const apiKey = options.apiKey;
-  const authDomain = options.authDomain;
-  const projectId = options.projectId;
-  const dbSettings = options.settings;
-  const onError = err => sm.onError(storageName, err.code || err);
+  let docId = options.docId;
 
-  const getDoc = () => doc;
-  const getDocId = () => docId || options.docId;
+  firebase.initializeApp({
+    apiKey: options.apiKey,
+    authDomain: options.authDomain,
+    projectId: options.projectId,
+  });
 
-  const getAsyncCollection = (clb) => {
-    if (collection) return clb(collection);
-    firebase.initializeApp({ apiKey, authDomain, projectId });
-    const fs = firebase.firestore();
-    fs.settings(dbSettings);
+  const db = firebase.firestore();
+  db.settings(options.settings);
 
-    const callback = () => {
-      db = firebase.firestore();
-      collection = db.collection(options.collectionName);
-      clb(collection);
-    }
+  if (options.enableOffline) {
+    db.enablePersistence().catch(error => editor.StorageManager.onError(storageName, error.code || error));
+  }
 
-    if (options.enableOffline) {
-      fs.enablePersistence().then(callback).catch(onError);
-    } else {
-      callback();
-    }
-  };
+  const collectionRef = db.constructor(options.collectionName);
+  let docRef = collectionRef.doc(docId);
 
-  const getAsyncDoc = (clb) => {
-    getAsyncCollection(cll => {
-      doc = cll.doc(getDocId());
-      clb(doc);
-    });
-  };
-
-  sm.add(storageName, {
-    getDoc,
-
-    getDocId,
+  editor.StorageManager.add(storageName, {
+    getDoc: () => docRef,
+    getDocId: () => docId,
 
     setDocId(id) {
       docId = id;
+      docRef = collectionRef.doc(docId);
     },
 
-    load(keys, clb, clbError) {
-      getAsyncDoc(doc => {
-        doc.get()
-        .then(doc => doc.exists && clb(doc.data()))
-        .catch(clbError);
-      });
+    load(keys, callback, errorCallback) {
+      docRef.get()
+      .then(doc => doc.exists && callback(doc.data()))
+      .catch(errorCallback);
     },
 
-    store(data, clb, clbError) {
-      getAsyncDoc(doc => {
-        doc.set(data)
-        .then(clb)
-        .catch(clbError);
-      });
+    store(data, callback, errorCallback) {
+      docRef.set(data)
+      .then(callback)
+      .catch(errorCallback);
     }
   });
 });
