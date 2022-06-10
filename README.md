@@ -2,7 +2,7 @@
 
 GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/firestore), flexible, scalable NoSQL cloud database to store and sync data for client/server-side development.
 
-> Requires GrapesJS v0.14.15 or higher
+> Requires GrapesJS v0.19.* or higher
 
 
 ## Summary
@@ -19,11 +19,12 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 
 |Option|Description|Default|
 |-|-|-
+| `type` | Type id used to register the new storage. You can use this option in case you want to replace the already available storages (eg. `remote`). | `'firestore'` |
 | `apiKey` | Firebase API key | `''` |
 | `authDomain` | Firebase Auth domain | `''` |
 | `projectId` | Cloud Firestore project ID | `''` |
 | `docId` | Document id | `'gjs'` |
-| `collectionName` | Collection name | `'templates'` |
+| `collectionName` | Collection name | `'projects'` |
 | `enableOffline` | Enable support for offline data persistence | `true` |
 | `settings` | Firestore database [settings](https://firebase.google.com/docs/reference/js/firebase.firestore.Settings) | `{ timestampsInSnapshots: true }` |
 
@@ -53,8 +54,8 @@ Before start using this plugin you have to create and enable Cloud Firestore pro
 <script src="https://unpkg.com/grapesjs"></script>
 <script src="path/to/grapesjs-firestore.min.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <div id="gjs"></div>
 
@@ -95,12 +96,6 @@ Install dependencies
 
 ```sh
 $ npm i
-```
-
-The plugin relies on GrapesJS via `peerDependencies` so you have to install it manually (without adding it to package.json)
-
-```sh
-$ npm i grapesjs --no-save
 ```
 
 Start the dev server
