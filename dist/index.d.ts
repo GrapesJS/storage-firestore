@@ -13,34 +13,37 @@ export declare type PluginOptions = {
 	 */
 	apiKey: string;
 	/**
-	 * Firebase Auth domain
-	 */
+	* Firebase Auth domain
+	*/
 	authDomain: string;
 	/**
-	 * Cloud Firestore project ID
-	 */
+	* Cloud Firestore project ID
+	*/
 	projectId: string;
 	/**
-	 * Document id
-	 * @default 'gjs'
-	 */
+	* Document id
+	* @default 'gjs'
+	*/
 	docId?: string;
 	/**
-	 * Collection name
-	 * @default 'projects'
-	 */
+	* Collection name
+	* @default 'projects'
+	*/
 	collectionName?: string;
 	/**
-	 * Enable support for offline data persistence
-	 * @default true
-	 */
+	* Enable support for offline data persistence
+	* @default true
+	*/
 	enableOffline?: boolean;
 	/**
-	 * Firestore settings (https://firebase.google.com/docs/reference/js/firebase.firestore.Settings)
-	 */
+	* Firestore settings (https://firebase.google.com/docs/reference/js/firebase.firestore.Settings)
+	*/
 	settings?: Firebase.firestore.Settings;
 };
 declare const plugin: grapesjs.Plugin<PluginOptions>;
-export default plugin;
+
+export {
+	plugin as default,
+};
 
 export {};
