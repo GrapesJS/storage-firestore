@@ -5,10 +5,9 @@
     <title>GrapesJS Firebase</title>
     <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
     <script src="https://unpkg.com/grapesjs"></script>
-    <script src="dist/grapesjs-firestore.min.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <style>
       body,
       html {
@@ -28,35 +27,37 @@
 
 
     <script type="text/javascript">
-      var editor = grapesjs.init({
-        height: '100%',
-        showOffsets: 1,
-        noticeOnUnload: 0,
-        storageManager: { type: 'firestore' },
-        container: '#gjs',
-        fromElement: true,
+      window.onload = () => {
+        var editor = grapesjs.init({
+          height: '100%',
+          showOffsets: 1,
+          noticeOnUnload: 0,
+          storageManager: { type: 'firestore' },
+          container: '#gjs',
+          fromElement: true,
 
-        plugins: ['grapesjs-firestore'],
-        pluginsOpts: {
-          'grapesjs-firestore': {
-            docId: 'someID',
-            apiKey: '***',
-            authDomain: '***.firebaseapp.com',
-            projectId: '***',
+          plugins: ['grapesjs-firestore'],
+          pluginsOpts: {
+            'grapesjs-firestore': {
+              docId: 'someID',
+              apiKey: '***',
+              authDomain: '***.firebaseapp.com',
+              projectId: '***',
+            }
           }
-        }
-      });
+        });
 
-      editor.on('storage:load', function(e) {
-        console.log('STORAGE:LOAD ', e);
-      });
-      editor.on('storage:store', function(e) {
-        console.log('STORAGE:STORE ', e);
-      });
-      editor.on('storage:error', function(e) {
-        console.log('STORAGE:ERROR ', e);
-      });
-      window.editor = editor;
+        editor.on('storage:load', function(e) {
+          console.log('STORAGE:LOAD ', e);
+        });
+        editor.on('storage:store', function(e) {
+          console.log('STORAGE:STORE ', e);
+        });
+        editor.on('storage:error', function(e) {
+          console.log('STORAGE:ERROR ', e);
+        });
+        window.editor = editor;
+      };
     </script>
   </body>
 </html>
