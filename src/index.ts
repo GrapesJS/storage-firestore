@@ -1,5 +1,5 @@
-import type grapesjs from 'grapesjs';
 import type Firebase from 'firebase';
+import type { Plugin, ProjectData } from 'grapesjs';
 
 declare const firebase: typeof Firebase;
 
@@ -50,7 +50,7 @@ export type PluginOptions = {
   settings?: Firebase.firestore.Settings,
 };
 
-const plugin: grapesjs.Plugin<PluginOptions> = (editor, opts) => {
+const plugin: Plugin<PluginOptions> = (editor, opts) => {
   const options: PluginOptions = {
     type: 'firestore',
     docId: 'gjs',
@@ -98,7 +98,7 @@ const plugin: grapesjs.Plugin<PluginOptions> = (editor, opts) => {
     async load() {
       const doc = await getDocRef();
       const result = await doc.get();
-      return (result.exists ? result.data() : {}) as grapesjs.ProjectData;
+      return (result.exists ? result.data() : {}) as ProjectData;
     },
 
     async store(data) {
