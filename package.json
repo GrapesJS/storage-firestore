@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "GrapesJS Cloud Firestore Storage Wrapper",
   "main": "dist/index.js",
+  "files": ["dist"],
   "scripts": {
     "patch": "npm version patch -m 'Bump v%s'",
     "start": "grapesjs-cli serve",
@@ -10,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/artf/grapesjs-firestore.git"
+    "url": "https://github.com/GrapesJS/storage-firestore.git"
   },
   "keywords": [
     "grapesjs",
