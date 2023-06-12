@@ -1,9 +1,11 @@
 {
   "name": "grapesjs-firestore",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "GrapesJS Cloud Firestore Storage Wrapper",
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "patch": "npm version patch -m 'Bump v%s'",
     "start": "grapesjs-cli serve",
