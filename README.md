@@ -39,7 +39,7 @@ GrapesJS storage wrapper for [Cloud Firestore](https://firebase.google.com/docs/
 * NPM
   * `npm i grapesjs-firestore`
 * GIT
-  * `git clone https://github.com/artf/grapesjs-firestore.git`
+  * `git clone https://github.com/GrapesJS/storage-firestore.git`
 
 
 
@@ -88,7 +88,7 @@ To get more about the Firestore security checkout [this guide](https://firebase.
 Clone the repository
 
 ```sh
-$ git clone https://github.com/artf/grapesjs-firestore.git
+$ git clone https://github.com/GrapesJS/storage-firestore.git
 $ cd grapesjs-firestore
 ```
 
