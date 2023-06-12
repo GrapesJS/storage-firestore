@@ -23,7 +23,7 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "firebase": "^8.10.1",
-    "grapesjs": "^0.19.4",
-    "grapesjs-cli": "^3.0.1"
+    "grapesjs": "^0.21.2",
+    "grapesjs-cli": "^4.1.1"
   }
 }
