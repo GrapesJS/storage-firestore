@@ -51,7 +51,7 @@ export type PluginOptions = {
 };
 
 const plugin: Plugin<PluginOptions> = (editor, opts) => {
-  const options: PluginOptions = {
+  const options: Required<PluginOptions> = {
     type: 'firestore',
     docId: 'gjs',
     collectionName: 'projects',
@@ -60,13 +60,10 @@ const plugin: Plugin<PluginOptions> = (editor, opts) => {
     ...opts,
   };
 
-  const sm = editor.StorageManager;
-  const storageName = options.type!;
-
   let dbRef: Firebase.firestore.Firestore;
   let docRef: Firebase.firestore.DocumentReference<Firebase.firestore.DocumentData>;
   let collectionRef: Firebase.firestore.CollectionReference<Firebase.firestore.DocumentData>;
-  let docId = opts.docId!;
+  let docId = options.docId!;
 
   const getDocRef = async () => {
     if (docRef) return docRef;
@@ -79,22 +76,22 @@ const plugin: Plugin<PluginOptions> = (editor, opts) => {
       });
 
       dbRef = firebase.firestore();
-      dbRef.settings(options.settings!);
+      dbRef.settings(options.settings);
 
-      if (opts.enableOffline) {
+      if (options.enableOffline) {
         await dbRef.enablePersistence();
       }
     }
 
     if (!collectionRef) {
-      collectionRef = dbRef.collection(opts.collectionName!);
+      collectionRef = dbRef.collection(options.collectionName);
     }
 
     docRef = collectionRef.doc(docId);
     return docRef;
   }
 
-  sm.add(storageName, {
+  editor.StorageManager.add(options.type, {
     async load() {
       const doc = await getDocRef();
       const result = await doc.get();
